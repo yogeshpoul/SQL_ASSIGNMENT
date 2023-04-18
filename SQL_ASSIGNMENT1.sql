@@ -1635,4 +1635,79 @@ where datediff(event_date,tmp)=0
 group by player_id;
 
 
+#Q44
+CREATE TABLE employee(
+		id INT,
+		name VARCHAR(20),
+		department VARCHAR(20),
+		manager_id INT,
+		CONSTRAINT prime_key PRIMARY KEY(id)
+	);
+
+
+INSERT into employee VALUES(101,'John','A',null),
+(102,'Dan','A',101),
+(103,'James','A',101),
+(104,'Amy','A',101),
+(105, 'Anne','A', 101),
+(106,'Ron','B', 101);
+
+select e1.name,count(e1.name) as count
+from employee e1
+inner join employee e2 on e1.id=e2.manager_id
+group by name
+having count(e1.name)>=5;
+
+#Q44
+
+create table Student
+(
+	student_id int,
+	student_name varchar(4),
+	gender varchar(1),
+	dept_id int,
+    foreign key (dept_id) references Department(dept_id)
+);
+
+
+create table Department
+(
+	dept_id int primary key,
+	dept_name varchar(30)
+);
+INSERT INTO Student values(1,'Jack','M',1),
+(2,'Jane','F',1),
+(3,'Mark','M',2);
+INSERT INTO Department VALUES(1,'Engineering'),
+(2,'Science'),
+(3,'Law');
+
+select * from Department;
+
+select d.dept_name,count(s.student_id)
+from Student s
+right join Department d on s.dept_id=d.dept_id
+group by d.dept_id;
+
+#46
+create table Product(
+product_key int PRIMARY KEY
+);
+create table Customer(
+customer_id int,
+product_key int,
+constraint Foreign Key(product_key) REFERENCES Product(product_key)
+);
+
+INSERT INTO Customer VALUES( 1,5),
+(2,6),
+(3,5),
+(3,6),
+(1,6);
+INSERT INTO Product VALUES(5),(6);
+
+select customer_id
+from Customer
+having count(distinct product_key) = (select count(distinct product_key) from Product);
+
 
